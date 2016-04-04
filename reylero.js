@@ -58,26 +58,26 @@ function animationLoop() {
 
   ctx.save();
 
-  ctx.translate(reylero.width/2, reylero.height/2);
+  ctx.translate(reylero.width - 70, reylero.height - 70);
 
   ctx.rotate(rotation);
 
-  //ctx.fillStyle = '#008BCC';
-  //ctx.fillRect(19/2 * -1, 7/2 * -1, 19, 7);
+  var deltaX = 115;
+  var deltaY = 145;
 
-  ctx.drawImage(armImg,arm.offsetX - 115, arm.offsetY - 145 );
+  ctx.drawImage(armImg,arm.offsetX - deltaX, arm.offsetY - deltaY );
 
   if(isDown) {
-    ctx.drawImage(hand2Img, arm.offsetX - 115, arm.offsetY - 145 );
+    ctx.drawImage(hand2Img, arm.offsetX - deltaX, arm.offsetY - deltaY );
   } else {
-    ctx.drawImage(handImg, arm.offsetX - 115, arm.offsetY - 145 );
+    ctx.drawImage(handImg, arm.offsetX - deltaX, arm.offsetY - deltaY );
   }
 
   ctx.restore();
 
   if(isDown) {
     smoke.update();
-    smoke.render(0, 50);
+    smoke.render(-50, 0);
   }
 }
 

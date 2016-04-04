@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <style>
+      .reylero-zika {
+        max-width: 50%;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      #reylero-arm {
+          position: absolute;
+          bottom: -40px;
+          transform: translateX(-50%);
+          left: 292px;
+          z-index: 1;
+       }
+
+      ul { padding: 0; }
+    </style>
+  </head>
+  <body>
+    <div class='reylero-zika'>
+      <canvas id="reylero-arm" width=700 height=800 style='border: 1px solid blue;'></canvas>
+      <ul id='scene-reylero'>
+        <li class='layer' data-depth='0'>
+          <img src="img/reylero.png" alt="reylero" />
+        </li>
+        <li class='layer' data-depth='-0.10'>
+          <img src="img/eyes-bottom.png" alt="reylero eyes" />
+        </li>
+        <li class='layer' data-depth='-0.10'>
+          <img src="img/eyes-top.png" alt="reylero eyes" />
+        </li>
+      </ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.12.2.min.js"   integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk="   crossorigin="anonymous"></script>
+    <script src='parallax.js'></script>
+    <script src="reylero.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $('#scene-reylero').parallax();
+      });
+    </script>
+  </body>
+</html>

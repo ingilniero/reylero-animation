@@ -6,18 +6,19 @@ var smoke;
 var isDown = false;
 
 $(document).mousemove(function(evt) {
-
   var m = getMousePos(reylero, evt);
 
   mouse.x = m.x;
   mouse.y = m.y;
 });
 
-$(document).mousedown(function() {
+$(document).mousedown(function(evt) {
+  evt.preventDefault();
   isDown = true;
 });
 
-$(document).mouseup(function() {
+$(document).mouseup(function(evt) {
+  evt.preventDefault();
   isDown = false;
 });
 
@@ -41,8 +42,8 @@ var arm = {
 };
 
 
-function armLoop() {
-  window.requestAnimationFrame(armLoop);
+function animationLoop() {
+  window.requestAnimationFrame(animationLoop);
 
   var targetX = mouse.x - (reylero.width/2);
   var targetY = mouse.y - (reylero.height/2);
@@ -76,7 +77,7 @@ function armLoop() {
 
   if(isDown) {
     smoke.update();
-    smoke.render(-100, -100);
+    smoke.render(0, 50);
   }
 }
 
@@ -117,16 +118,8 @@ function sprite(o) {
     var cy = canvasY || 0;
     var imgWidth = that.width / numberOfFrames * that.scaleRatio;
     var imgHeight = that.height * that.scaleRatio;
-    that.context.drawImage(
-      img,
-      sx,
-      sy,
-      swidth,
-      sheight,
-      cx,
-      cy,
-      imgWidth,
-      imgHeight);
+
+    that.context.drawImage( img, sx, sy, swidth, sheight, cx, cy, imgWidth, imgHeight);
   };
 
   that.update = function(){
@@ -161,4 +154,4 @@ smoke = sprite({
   yOffset: 0
 });
 
-armLoop();
+animationLoop();

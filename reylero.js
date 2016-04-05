@@ -1,11 +1,23 @@
 var reylero = document.getElementById('reylero-arm');
+var mosquitoCanvas = document.getElementById('mosquito');
+
 var ctx = reylero.getContext('2d');
 var mouse = { x: 0, y: 0 };
 var rotation = -0.3
 var smoke;
+var mosquito;
 var isDown = false;
+var handImg = new Image();
+var hand2Img = new Image();
+var armImg = new Image();
+var smokeImage = new Image();
+var mosquitoImage = new Image();
+var currentMousePos = { x: -1, y: -1 };
 
 $(document).mousemove(function(evt) {
+  currentMousePos.x = evt.pageX;
+  currentMousePos.y = evt.pageY;
+
   var m = getMousePos(reylero, evt);
 
   mouse.x = m.x;
@@ -22,14 +34,6 @@ $(document).mouseup(function(evt) {
   isDown = false;
 });
 
-var handImg = new Image();
-var hand2Img = new Image();
-var armImg = new Image();
-
-handImg.src = 'img/hand-1.png';
-hand2Img.src = 'img/hand-2.png';
-armImg.src = 'img/arm.png';
-
 //579 × 719
 // -170, -280
 var arm = {
@@ -41,15 +45,17 @@ var arm = {
   offsetY: -280
 };
 
-
 function animationLoop() {
   window.requestAnimationFrame(animationLoop);
 
-  var targetX = mouse.x - (reylero.width/2);
-  var targetY = mouse.y - (reylero.height/2);
+  mosquito.update();
+  mosquito.render();
+  follow();
+
+  var targetX = mouse.x - (reylero.width);
+  var targetY = mouse.y - (reylero.height);
 
   var newRotation = Math.atan2(targetY, targetX) + 2;
-
 
   if(Math.abs(newRotation) > 0.1 && Math.abs(newRotation) < 0.4)
     rotation = newRotation;
@@ -77,7 +83,7 @@ function animationLoop() {
 
   if(isDown) {
     smoke.update();
-    smoke.render(-50, 0);
+    smoke.render();
   }
 }
 
@@ -92,6 +98,21 @@ function getMousePos(canvas, evt)
   };
 }
 
+function follow() {
+  $(mosquitoCanvas).offset({
+    top: getTop(),
+    left: getLeft()
+  });
+}
+
+function getTop() {
+  return (currentMousePos.y - ($(mosquitoCanvas).height() / 2));
+}
+
+function getLeft() {
+  return (currentMousePos.x - ($(mosquitoCanvas).width() / 2));
+}
+
 function sprite(o) {
   var that = {};
 
@@ -100,26 +121,41 @@ function sprite(o) {
   that.height = o.h;
   that.image = o.img;
   that.scaleRatio = o.scaleRatio;
-  that.offset = o.yOffset;
+  that.sx = o.sx;
+  that.sy = o.sy;
+  that.dx = o.dx;
+  that.dy = o.dy;
+  that.frameDelta = o.frameDelta;
+  that.clear = o.clear;
 
   var frameIndex = 0,
     tickCount = 0,
     ticksPerFrame = o.ticksPerFrame || 0,
     numberOfFrames = o.numberOfFrames || 1;
 
-  that.render = function(canvasX, canvasY){
+  that.render = function(){
+    if(that.clear) {
+      that.context.clearRect(0, 0, that.width, that.height);
+    }
     //draw animation
     var img = that.image;
     var sx = frameIndex * that.width / numberOfFrames;
-    var sy = that.offset;
+    var sy = that.sy;
     var swidth = that.width / numberOfFrames;
     var sheight = that.height;
-    var cx = canvasX || 0;
-    var cy = canvasY || 0;
+
+    var dx = that.dx;
+
+    if(that.frameDelta != undefined) {
+      dx = (that.frameDelta[frameIndex] * that.scaleRatio) - that.dx;
+    }
+
+    var dy = that.dy;
+
     var imgWidth = that.width / numberOfFrames * that.scaleRatio;
     var imgHeight = that.height * that.scaleRatio;
 
-    that.context.drawImage( img, sx, sy, swidth, sheight, cx, cy, imgWidth, imgHeight);
+    that.context.drawImage( img, sx, sy, swidth, sheight, dx, dy, imgWidth, imgHeight);
   };
 
   that.update = function(){
@@ -141,8 +177,6 @@ function sprite(o) {
   return that;
 }
 
-var smokeImage = new Image();
-smokeImage.src = "img/smoke.png";
 smoke = sprite({
   w : 8050,
   h : 865,
@@ -151,7 +185,37 @@ smoke = sprite({
   numberOfFrames: 7,
   ticksPerFrame: 3,
   scaleRatio : 0.5,
-  yOffset: 0
+  sy: 0,
+  sx: 0,
+  dy: 0,
+  dx: -50,
+  clear: false
 });
 
-animationLoop();
+mosquito = sprite({
+  w              : 5380,
+  h              : 1000,
+  ctx            : mosquitoCanvas.getContext('2d'),
+  img            : mosquitoImage,
+  numberOfFrames : 8,
+  ticksPerFrame  : 4,
+  scaleRatio     : 0.5,
+  sx             : 0,
+  sy             : 450,
+  dx             : 250,
+  dy             : 0,
+  frameDelta     : [0, 80, 160, 255, 320, 420, 500, 480],
+  clear: true
+});
+
+
+smokeImage.src = "img/smoke.png";
+handImg.src = 'img/hand-1.png';
+hand2Img.src = 'img/hand-2.png';
+mosquitoImage.src = 'img/mosquito.png';
+
+armImg.addEventListener('load', function() {
+  animationLoop();
+});
+
+armImg.src = 'img/arm.png';

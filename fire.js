@@ -4,6 +4,7 @@
 
 var fire;
 var mosquito;
+var smoke;
 
 function launch() {
   //2000 × 571
@@ -25,13 +26,27 @@ function launch() {
     ctx            : mosquitoCanvas.getContext('2d'),
     img            : mosquitoImage,
     numberOfFrames : 8,
-    ticksPerFrame  : 5,
-    scaleRatio     : 1,
+    ticksPerFrame  : 4,
+    scaleRatio     : 0.5,
     yOffset        : 450
   });
 
+  // 8051 × 865
+  smoke = sprite({
+    w : 8050,
+    h : 865,
+    ctx: smokeCanvas.getContext('2d'),
+    img : smokeImage,
+    numberOfFrames: 7,
+    ticksPerFrame: 3,
+    scaleRatio : 0.5,
+    yOffset: 0
+  })
+
   animationLoop();
 }
+
+var mosquitoOffset = [0, 80, 160, 255, 320, 420, 500, 480];
 
 function sprite(o) {
   var that = {};
@@ -49,32 +64,22 @@ function sprite(o) {
     numberOfFrames = o.numberOfFrames || 1;
 
   that.render = function(){
-    console.log('render');
-    //that.context.clearRect(0, 0, that.width, that.height);
+    that.context.clearRect(0, 0, that.width, that.height);
     //draw animation
     var img = that.image;
     var sx = frameIndex * that.width / numberOfFrames;
     var sy = that.offset;
     var swidth = that.width / numberOfFrames;
     var sheight = that.height;
-    var cx = 0;
+    var cx = (mosquitoOffset[frameIndex] * that.scaleRatio) - 250;
     var cy = 0;
     var imgWidth = that.width / numberOfFrames * that.scaleRatio;
     var imgHeight = that.height * that.scaleRatio;
-    that.context.drawImage(
-      img,
-      sx,
-      sy,
-      swidth,
-      sheight,
-      cx,
-      cy,
-      imgWidth,
-      imgHeight);
+
+    that.context.drawImage( img, sx, sy, swidth, sheight, cx, cy, imgWidth, imgHeight);
   };
 
   that.update = function(){
-    console.log('update');
     tickCount += 1;
 
     if (tickCount > ticksPerFrame) {
@@ -102,11 +107,17 @@ function animationLoop() {
   mosquito.update();
   mosquito.render();
 
-  //follow();
+  smoke.update();
+  smoke.render();
+
+  follow();
 }
 
 var mosquitoImage = new Image();
-mosquitoImage.src = 'mosquito.png';
+mosquitoImage.src = 'img/mosquito.png';
+
+var smokeImage = new Image();
+smokeImage.src = 'img/smoke.png';
 
 var fireImage = new Image();
 // Load sprite sheet
@@ -118,8 +129,8 @@ fireCanvas.width = 2000;
 fireCanvas.height = 300;
 
 var mosquitoCanvas = document.getElementById('mosquitoCanvas');
-mosquitoCanvas.width = 5380;
-mosquitoCanvas.height = 200;
+
+var smokeCanvas = document.getElementById('smoke');
 
 $(mosquitoCanvas).offset({top: -1, left: -1});
 
@@ -131,11 +142,11 @@ function follow() {
 }
 
 function getTop() {
-  return (currentMousePos.y - ($(fireCanvas).height() / 2));
+  return (currentMousePos.y - ($(mosquitoCanvas).height() / 2));
 }
 
 function getLeft() {
-  return (currentMousePos.x - ($(fireCanvas).width() / 2));
+  return (currentMousePos.x - ($(mosquitoCanvas).width() / 2));
 }
 
 var currentMousePos = { x: -1, y: -1 };

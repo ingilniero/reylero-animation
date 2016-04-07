@@ -1,5 +1,6 @@
 var reylero = document.getElementById('reylero-arm');
 var mosquitoCanvas = document.getElementById('mosquito');
+var $mosquitoCanvas = $(mosquitoCanvas);
 
 var ctx = reylero.getContext('2d');
 var mouse = { x: 0, y: 0 };
@@ -13,6 +14,7 @@ var armImg = new Image();
 var smokeImage = new Image();
 var mosquitoImage = new Image();
 var currentMousePos = { x: -1, y: -1 };
+var renderMosquito = false;
 
 $(document).mousemove(function(evt) {
   currentMousePos.x = evt.pageX;
@@ -49,11 +51,27 @@ var arm = {
   deltaY : 145 * sizeRatio
 };
 
+function showMosquitoCanvas() {
+  if($mosquitoCanvas.css('display') == 'block') {
+    $mosquitoCanvas.css('display', 'none');
+  }
+}
+
 function animationLoop() {
   window.requestAnimationFrame(animationLoop);
 
-  mosquito.update();
-  mosquito.render();
+  if(renderMosquito) {
+
+    if($mosquitoCanvas.css('display') == 'none') {
+      $mosquitoCanvas.css('display', 'block');
+    }
+
+    mosquito.update();
+    mosquito.render();
+  } else {
+    showMosquitoCanvas();
+  }
+
   follow();
 
   var targetX = mouse.x - (reylero.width);
@@ -74,7 +92,7 @@ function animationLoop() {
 
   ctx.drawImage(armImg, arm.offsetX - arm.deltaX, arm.offsetY - arm.deltaY, arm.width, arm.height);
 
-  if(isDown) {
+  if(isDown && renderMosquito) {
     ctx.drawImage(hand2Img, arm.offsetX - arm.deltaX, arm.offsetY - arm.deltaY, arm.width, arm.height );
   } else {
     ctx.drawImage(handImg, arm.offsetX - arm.deltaX, arm.offsetY - arm.deltaY, arm.width, arm.height);
@@ -82,7 +100,7 @@ function animationLoop() {
 
   ctx.restore();
 
-  if(isDown) {
+  if(isDown && renderMosquito) {
     smoke.update();
     smoke.render();
   }
@@ -100,6 +118,18 @@ function getMousePos(canvas, evt)
 }
 
 function follow() {
+  var left = getLeft();
+  var top = getTop();
+  var $reyleroContainer = $('.reylero-container');
+  var reyleroLeft = $reyleroContainer.offset().left;
+  var reyleroTop = $reyleroContainer.offset().top;
+
+  if (left < reyleroLeft) {
+    renderMosquito = false;
+  } else {
+    renderMosquito = true;
+  }
+
   $(mosquitoCanvas).offset({
     top: getTop(),
     left: getLeft()

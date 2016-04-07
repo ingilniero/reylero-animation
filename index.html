@@ -7,8 +7,7 @@
       }
 
       .reylero-position {
-        margin: 0 auto;
-        width: 50%;
+        width: 400px;
         margin-top: 50px;
       }
 
@@ -30,27 +29,64 @@
 
       .hide { display: none; }
 
+      .content {
+        width: 49%;
+        display: inline-block;
+      }
     </style>
   </head>
   <body>
-    <div class='reylero-zika reylero-position hide'>
+    <div class='content'>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+        minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+        sint occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum.</p>
 
-      <canvas id="reylero-arm" width=400 height=500></canvas>
-
-      <ul id='scene-reylero'>
-        <li class='layer' data-depth='0'>
-          <img src="img/reylero.png" alt="reylero" />
-        </li>
-        <li class='layer' data-depth='-0.10'>
-          <img src="img/eyes-bottom.png" alt="reylero eyes" />
-        </li>
-        <li class='layer' data-depth='-0.10'>
-          <img src="img/eyes-top.png" alt="reylero eyes" />
-        </li>
-      </ul>
-
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+        minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+        sint occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+        minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+        sint occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+        minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+        sint occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum.</p>
     </div>
-    <canvas width=100 height=100 id="mosquito"></canvas>
+    <div class='content reylero-container'>
+      <div class='reylero-zika reylero-position hide'>
+
+        <canvas id="reylero-arm" width=400 height=500></canvas>
+
+        <ul id='scene-reylero'>
+          <li class='layer' data-depth='0'>
+            <img src="img/reylero.png" alt="reylero" />
+          </li>
+          <li class='layer' data-depth='-0.10'>
+            <img src="img/eyes-bottom.png" alt="reylero eyes" />
+          </li>
+          <li class='layer' data-depth='-0.10'>
+            <img src="img/eyes-top.png" alt="reylero eyes" />
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    <canvas width=100 height=100 id="mosquito" style='display: block; position: absolute;'></canvas>
     <script src="https://code.jquery.com/jquery-1.12.2.min.js"   integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk="   crossorigin="anonymous"></script>
     <script src='parallax.js'></script>
     <script src="reylero.js"></script>

@@ -36,13 +36,17 @@ $(document).mouseup(function(evt) {
 
 //579 × 719
 // -170, -280
+var sizeRatio = 0.7;
+
 var arm = {
-  x: -900,
-  y: -700,
-  width: 579,
-  height: 719,
-  offsetX: -170,
-  offsetY: -280
+  x: -900 * sizeRatio,
+  y: -700 * sizeRatio,
+  width: 579 * sizeRatio,
+  height: 719 * sizeRatio,
+  offsetX: -170 * sizeRatio,
+  offsetY: -280 * sizeRatio,
+  deltaX : 115 * sizeRatio,
+  deltaY : 145 * sizeRatio
 };
 
 function animationLoop() {
@@ -68,15 +72,12 @@ function animationLoop() {
 
   ctx.rotate(rotation);
 
-  var deltaX = 115;
-  var deltaY = 145;
-
-  ctx.drawImage(armImg,arm.offsetX - deltaX, arm.offsetY - deltaY );
+  ctx.drawImage(armImg, arm.offsetX - arm.deltaX, arm.offsetY - arm.deltaY, arm.width, arm.height);
 
   if(isDown) {
-    ctx.drawImage(hand2Img, arm.offsetX - deltaX, arm.offsetY - deltaY );
+    ctx.drawImage(hand2Img, arm.offsetX - arm.deltaX, arm.offsetY - arm.deltaY, arm.width, arm.height );
   } else {
-    ctx.drawImage(handImg, arm.offsetX - deltaX, arm.offsetY - deltaY );
+    ctx.drawImage(handImg, arm.offsetX - arm.deltaX, arm.offsetY - arm.deltaY, arm.width, arm.height);
   }
 
   ctx.restore();
@@ -184,11 +185,11 @@ smoke = sprite({
   img : smokeImage,
   numberOfFrames: 7,
   ticksPerFrame: 3,
-  scaleRatio : 0.5,
+  scaleRatio : 0.3,
   sy: 0,
   sx: 0,
   dy: 0,
-  dx: -50,
+  dx: 0,
   clear: false
 });
 

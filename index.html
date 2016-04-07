@@ -3,7 +3,7 @@
     <style>
       .reylero-zika {
         position: relative;
-        height: 790px;
+        height: 500px;
       }
 
       .reylero-position {
@@ -13,14 +13,18 @@
       }
 
       #reylero-arm {
-          position: absolute;
-          bottom: 290px;
-          transform: translateX(-50%);
-          left: 112px;
-          z-index: 1;
-       }
+        position: absolute;
+        bottom: 136px;
+        transform: translateX(-50%);
+        left: 75px;
+        z-index: 1;
+      }
 
-       #mosquito { z-index: 999; }
+      #scene-reylero img {
+        max-width: 400px;
+      }
+
+      #mosquito { z-index: 999; }
 
       ul { padding: 0; }
 
@@ -31,7 +35,7 @@
   <body>
     <div class='reylero-zika reylero-position hide'>
 
-      <canvas id="reylero-arm" width=500 height=600></canvas>
+      <canvas id="reylero-arm" width=400 height=500></canvas>
 
       <ul id='scene-reylero'>
         <li class='layer' data-depth='0'>
